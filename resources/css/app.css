@@ -1,0 +1,114 @@
+@import 'tailwindcss';
+
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+@source '../../storage/framework/views/*.php';
+@source '../**/*.blade.php';
+@source '../**/*.js';
+
+@theme {
+    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+        'Segoe UI Symbol', 'Noto Color Emoji';
+}
+
+.grab{
+    cursor: grab;
+}
+
+.grab:active{
+    cursor: grabbing;
+}
+
+.pointer, .card.action, .list-group-item-action, .dropdown-item{
+    cursor: pointer;
+}
+
+.border.border-dashed{
+    border-style: dashed !important;
+}
+
+.card.action:not(.border), .card.action.border-0{
+    border: 1px solid transparent !important;
+}
+
+.card.action:hover, .card.action.border-0:hover, .card.action.active, .card.action.active.border-0{
+    border-color: var(--bs-primary) !important;
+}
+
+.cca-hover .cca-hover-show{
+    display: none;
+}
+
+.cca-hover:hover .cca-hover-show{
+    display: block;
+}
+
+input[type=date], input[type=datetime-local], input[type=time]{
+    position: relative;
+    user-select: none !important;
+}
+
+input[type=date]::-webkit-calendar-picker-indicator,
+input[type=datetime-local]::-webkit-calendar-picker-indicator,
+input[type=time]::-webkit-calendar-picker-indicator {
+    background: transparent;
+    bottom: 0;
+    color: transparent;
+    cursor: pointer;
+    height: auto;
+    left: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: auto;
+    user-select: none;
+    z-index: 2000;
+    user-select: none !important;
+}
+
+.bounce {
+    animation: bounce 1s infinite;
+    transition: opacity 0.3s;
+}
+
+textarea{
+    resize: none !important;
+}
+
+@media screen and (max-width:1200px){
+  
+}
+
+@media screen and (max-width:992px){
+  
+}
+
+@media screen and (max-width:768px) {
+    .hide-md, .d-none.hide-md, .d-block.hide-md, .d-flex.hide-md{
+        display: none !important;
+    }
+
+    .position-fixed-md{
+        position: fixed;
+    }
+
+    .position-absolute-md{
+        position: absolute;
+    }
+
+    .container{
+        min-width: 100%;
+    }
+}
+
+@media screen and (max-width:576px){
+  
+}
+
+@keyframes bounce {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-8px);
+    }
+}
