@@ -1,6 +1,8 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { api } from "../services/Api";
 import { Spinner } from "../components/Spinner";
+import { Navigate } from "react-router-dom";
+import { routes } from "../routes/Routes";
 
 const Context = createContext();
 
@@ -31,7 +33,15 @@ export const AuthProvider = ({displayChildrenEvenIfNotAuthenticted, children}) =
     return(
         <Context.Provider value={values}>
             {displayChildrenEvenIfNotAuthenticted ? children : (
-                <>{loading ? <Spinner show bg="white" /> : authenticated && children}</>
+                <>
+                    {loading ? (
+                        <Spinner show bg="white" />
+                    ) : (
+                        authenticated && children ? 'children' : (
+                            <Navigate to={routes.navigate.to.account().withPath('login')} />
+                        )
+                    )}
+                </>
             )}
         </Context.Provider>
     )
