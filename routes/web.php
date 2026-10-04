@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', fn () => redirect('/apps'));
+Route::get('/', fn () => view('CCA'));
 Route::get('/apps', fn () => view('launcher'));
 Route::get('/dashboard', fn () => view('dashboard'));
 Route::get('/employee', fn () => view('employee'));
