@@ -8,6 +8,7 @@ export default defineConfig({
         laravel({
             input: [
                 'resources/css/app.css',
+                'resources/js/bootstrap.js',
                 'resources/js/apps/account/main.jsx',
                 'resources/js/apps/attendance/main.jsx',
                 'resources/js/apps/CRM/main.jsx',
