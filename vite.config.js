@@ -9,6 +9,7 @@ export default defineConfig({
             input: [
                 'resources/css/app.css',
                 'resources/js/bootstrap.js',
+                'resources/js/apps/main/main.jsx',
                 'resources/js/apps/account/main.jsx',
                 'resources/js/apps/attendance/main.jsx',
                 'resources/js/apps/CRM/main.jsx',

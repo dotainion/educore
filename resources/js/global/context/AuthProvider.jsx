@@ -37,7 +37,7 @@ export const AuthProvider = ({displayChildrenEvenIfNotAuthenticted, children}) =
                     {loading ? (
                         <Spinner show bg="white" />
                     ) : (
-                        authenticated && children ? 'children' : (
+                        authenticated && children ? children : (
                             <Navigate to={routes.navigate.to.account().withPath('login')} />
                         )
                     )}

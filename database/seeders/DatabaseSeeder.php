@@ -22,8 +22,8 @@ class DatabaseSeeder extends Seeder
     ];
 
     private function seeders(): array{
-        if(true){
-            $this->production = [
+        if(app()->environment('local')){
+            return [
                 ...$this->production,
                 ...$this->development
             ];
