@@ -5,9 +5,13 @@ use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\RecoveryController;
 use App\Http\Controllers\ActivityLogController;
+use App\Http\Controllers\ClassFormController;
 use App\Http\Controllers\Permission\PermissionController;
 use App\Http\Controllers\Role\RoleController;
+use App\Http\Controllers\SubjectController;
 use App\Http\Controllers\Users\AddressController;
+use App\Http\Controllers\Users\StudentController;
+use App\Http\Controllers\Users\UserController;
 
 Route::post('/register', [RegisterController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
@@ -30,17 +34,21 @@ Route::middleware('auth:sanctum')->group(function(){
     Route::prefix('sys')->group(function(){
        Route::get('/activity/log/list', [ActivityLogController::class, 'list']);
     });
-});
 
-/*
-Route::middleware(['role:admin'])->group(function(){
-    Route::get('/admin/dashboard', 'AdminController@dashboard');
-    Route::get('/admin/users', 'AdminController@users');
+    Route::prefix('user')->group(function(){
+        Route::crud(controller: UserController::class);
+    });
+
+    Route::prefix('student')->group(function(){
+        Route::crud(controller: StudentController::class);
+    });
+
+    Route::prefix('class')->group(function(){
+        Route::crud(controller: ClassFormController::class);
+    });
+
+    Route::prefix('subject')->group(function(){
+        Route::crud(controller: SubjectController::class);
+    });
 });
-Route::post('/roles', [RoleController::class, 'store'])->middleware('role:admin');
-Route::post('/permissions', [PermissionController::class, 'store'])->middleware('role:admin');
-Route::post('/assign-role', [RoleController::class, 'assignRole'])->middleware('role:admin');
-Route::post('/assign-permission', [PermissionController::class, 'assignPermission'])
-    ->middleware('role:admin')
-    ->middleware('permission:edit articles|delete posts');*/
 

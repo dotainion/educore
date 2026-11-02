@@ -11,14 +11,13 @@ class DatabaseSeeder extends Seeder
     use WithoutModelEvents;
 
     protected array $production = [
-        DepartmentSeeder::class,
         RolePermissionSeeder::class,
         AdminAccountSeeder::class,
-        DocumentTypeSeeder::class,
     ];
     protected array $development = [
-        JobAndApplicantSeeder::class,
-        LeaveRequestSeeder::class,
+        ClassFormSeeder::class,
+        StudentSeeder::class,
+        SubjectSeeder::class
     ];
 
     private function seeders(): array{

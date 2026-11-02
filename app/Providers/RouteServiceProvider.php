@@ -9,10 +9,7 @@ use Illuminate\Support\Facades\Route;
 class RouteServiceProvider extends ServiceProvider
 {
     const API_FILE_NAMES = [
-        'HR',
-        'CRM',
-        'employee',
-        'playground'//this is temparary until a way to use seeder is found.
+
     ];
 
     public function path($name){

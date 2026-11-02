@@ -2,9 +2,7 @@
 
 namespace App\Http\Resources;
 
-use App\Http\Resources\HR\DepartmentResource;
-use App\Http\Resources\HR\EmergencyContactResource;
-use App\Http\Resources\HR\EmploymentResource;
+use App\Http\Resources\EmergencyContactResource;
 use App\Http\Resources\Role\RoleResource;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -19,7 +17,6 @@ class UserResource extends JsonResource
             'id' => $this->userId,
             'type' => $this->type,
             'attributes' => [
-                'applicantId' => $this->applicantId,
                 'firstName' => $this->firstName,
                 'lastName' => $this->lastName,
                 'fullName' => trim("{$this->firstName} {$this->lastName}"),
@@ -31,10 +28,12 @@ class UserResource extends JsonResource
                 'createdAt' => $this->created_at,
                 'updatedAt' => $this->updated_at,
                 'roles' => RoleResource::collection($this->roles),
-                'departments' => DepartmentResource::collection($this->whenLoaded('departments')),
-                'employment' => new EmploymentResource($this->whenLoaded('employment')),
+                'departments' => null,
+                'employment' => null,
                 'addresses' => AddressResource::collection($this->whenLoaded('addresses')),
                 'emergencyContacts' => EmergencyContactResource::collection($this->whenLoaded('emergencyContacts')),
+                'subjects' => SubjectResource::collection($this->whenLoaded('subjects')),
+                'classes' => ClassFormResource::collection($this->whenLoaded('classes')),
                 'photo' => null
             ]
         ];

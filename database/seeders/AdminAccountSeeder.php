@@ -2,8 +2,6 @@
 
 namespace Database\Seeders;
 
-use App\Models\HR\Department;
-use App\Models\HR\LinkDepartment;
 use App\Models\Permission;
 use App\Models\Role;
 use Illuminate\Database\Seeder;
@@ -30,17 +28,6 @@ class AdminAccountSeeder extends Seeder
             'dob' => null,
             'status' => 'active',
         ]);
-
-        $departments = Department::all();
-        foreach($departments as $dept){
-            $departments = LinkDepartment::updateOrCreate([
-                'userId' => $user->userId,
-                'departmentId' => $dept->departmentId
-            ],[
-                'userId' => $user->userId,
-                'departmentId' => $dept->departmentId
-            ]);
-        }
 
         if (!$user->hasRole('super_admin')) {
             $user->assignRole($role);

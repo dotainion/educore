@@ -5,7 +5,6 @@ namespace App\Http\Requests;
 class UserRequest extends BaseRequest
 {
     protected array $rules = [
-        'applicantId' => [],
         'firstName' => ['string', 'max:255'],
         'lastName' => ['string', 'max:255'],
         'gender' => ['in:male,female'],

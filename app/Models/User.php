@@ -2,9 +2,7 @@
 
 namespace App\Models;
 
-use App\Models\HR\Department;
-use App\Models\HR\EmergencyContact;
-use App\Models\HR\Employment;
+use App\Models\EmergencyContact;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -25,11 +23,10 @@ class User extends Authenticatable
     protected $guard_name = 'sanctum';
 
     // ✅ AUTO LOAD
-    protected $with = ['addresses', 'roles', 'departments', 'employment', 'emergencyContacts'];
+    protected $with = ['addresses', 'roles', 'emergencyContacts', 'subjects', 'classes'];
 
     protected $fillable = [
         'userId',
-        'applicantId',
         'firstName',
         'lastName',
         'email',
@@ -62,20 +59,25 @@ class User extends Authenticatable
         return $this->hasMany(Address::class, 'userId', 'userId');
     }
 
-    public function departments(){
+    public function emergencyContacts(){
+        return $this->hasMany(EmergencyContact::class, 'userId', 'userId');
+    }
+
+    public function subjects(){
         return $this->belongsToMany(
-            Department::class,
-            'user_department',
+            Subject::class,
+            'subject_link_users',
             'userId',
-            'departmentId'
+            'subjectId'
         );
     }
 
-    public function employment(){
-        return $this->hasOne(Employment::class, 'userId', 'userId');
-    }
-
-    public function emergencyContacts(){
-        return $this->hasMany(EmergencyContact::class, 'userId', 'userId');
+    public function classes(){
+        return $this->belongsToMany(
+            Subject::class,
+            'users_link_classes',
+            'userId',
+            'classId'
+        );
     }
 }
