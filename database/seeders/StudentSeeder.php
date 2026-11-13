@@ -35,8 +35,7 @@ class StudentSeeder extends Seeder
             'notes' => null,
             'status' => 'active',
             'dob' => '2013-05-12',
-        ],
-        [
+        ],[
             'firstName' => 'Sarah',
             'middleName' => 'Ann',
             'lastName' => 'Charles',

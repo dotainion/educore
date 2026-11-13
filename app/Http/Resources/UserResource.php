@@ -2,7 +2,7 @@
 
 namespace App\Http\Resources;
 
-use App\Http\Resources\EmergencyContactResource;
+use App\Http\Resources\ContactResource;
 use App\Http\Resources\Role\RoleResource;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -31,7 +31,7 @@ class UserResource extends JsonResource
                 'departments' => null,
                 'employment' => null,
                 'addresses' => AddressResource::collection($this->whenLoaded('addresses')),
-                'emergencyContacts' => EmergencyContactResource::collection($this->whenLoaded('emergencyContacts')),
+                'contacts' => ContactResource::collection($this->whenLoaded('contacts')),
                 'subjects' => SubjectResource::collection($this->whenLoaded('subjects')),
                 'classes' => ClassFormResource::collection($this->whenLoaded('classes')),
                 'photo' => null

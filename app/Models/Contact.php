@@ -2,16 +2,15 @@
 
 namespace App\Models;
 
-use App\Models\User;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class EmergencyContact extends Model
+class Contact extends Model
 {
     use SoftDeletes, HasUuids;
 
-    protected $table = 'emergency_contacts';
+    protected $table = 'contacts';
     protected $primaryKey = 'contactId';
     public $incrementing = false;
     protected $keyType = 'string';
@@ -19,11 +18,16 @@ class EmergencyContact extends Model
     protected $fillable = [
         'contactId',
         'userId',
-        'name',
-        'relationship',
-        'phone',
         'primary',
+        'name',
+        'title',
+        'email',
+        'phone',
+        'company',
+        'type',
         'note',
+        'vip',
+        'relationship',
     ];
 
     protected function casts(): array{
@@ -34,11 +38,8 @@ class EmergencyContact extends Model
 
     public function uniqueIds(){
         return [
-            'contactId'
+            'contactId',
+            'userId',
         ];
-    }
-    
-    public function job(){
-        return $this->belongsTo(User::class, 'userId', 'userId');
     }
 }

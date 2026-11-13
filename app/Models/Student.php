@@ -4,9 +4,13 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Models\EmergencyContact;
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Student extends Model
 {
+    use HasUuids, SoftDeletes;
+
     protected $primaryKey = 'studentId';
     protected $guarded = [];
     protected $guard_name = 'sanctum';
@@ -54,9 +58,5 @@ class Student extends Model
             'studentId',
             'classId'
         ];
-    }
-
-    public function emergencyContacts(){
-        return $this->hasMany(EmergencyContact::class, 'userId', 'studentId');
     }
 }

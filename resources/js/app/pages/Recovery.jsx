@@ -53,7 +53,6 @@ export const Recovery = () => {
                                 <FormInput
                                     onChange={(e)=>setEmail(e.target.value)}
                                     value={email}
-                                    className="form-control"
                                     type="email"
                                     name="email"
                                     label="Email"
@@ -61,7 +60,7 @@ export const Recovery = () => {
                                 />
                             </div>
                         )}
-                        <FormSubmit className="btn btn-primary w-100">{sent ? 'Resend' : 'Send'}</FormSubmit>
+                        <FormSubmit className="btn-primary w-100">{sent ? 'Resend' : 'Send'}</FormSubmit>
                         <div className="mt-3">
                             <a onClick={()=>navigate(routes.signIn)} className="link-primary text-decoration-none btn border-0 p-0">Login instead</a>
                         </div>

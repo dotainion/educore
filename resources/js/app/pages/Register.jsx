@@ -157,7 +157,7 @@ export const Register = () => {
         <div className="container pb-5">
             <div className="row justify-content-center m-0 pt-3">
                 <div className="col-12 p-0" style={{maxWidth: '800px'}}>
-                    <Form data={params} onSuccess={onSuccess} action="/register" className="card border">
+                    <Form params={params} onSuccess={onSuccess} action="/register" className="card border">
                         <div className="card-body px-0 px-md-3">
                             <div className="text-center">
                                 <BiUser className="display-4 m-auto" />
@@ -168,7 +168,6 @@ export const Register = () => {
                                 <div className="col-12 col-md-6">
                                     <div className="mb-3">
                                         <FormInput
-                                            className="form-control"
                                             type="text"
                                             name="firstName"
                                             label="First Name"
@@ -177,7 +176,6 @@ export const Register = () => {
                                     </div>
                                     <div className="mb-3">
                                         <FormInput
-                                            className="form-control"
                                             type="text"
                                             name="lastName"
                                             label="Last Name"
@@ -186,7 +184,6 @@ export const Register = () => {
                                     </div>
                                     <div className="mb-3">
                                         <FormSelect
-                                            className="form-control form-select"
                                             name="gender"
                                             label="Gender"
                                         >
@@ -197,7 +194,6 @@ export const Register = () => {
                                     </div>
                                     <div className="mb-3">
                                         <FormInput
-                                            className="form-control"
                                             type="email"
                                             name="email"
                                             label="Email"
@@ -208,7 +204,6 @@ export const Register = () => {
                                 <div className="col-12 col-md-6">
                                     <div className="mb-3">
                                         <FormInput
-                                            className="form-control"
                                             type="text"
                                             name="contact"
                                             label="Contact"
@@ -217,7 +212,6 @@ export const Register = () => {
                                     </div>
                                     <div className="mb-3">
                                         <FormInput
-                                            className="form-control"
                                             type="date"
                                             name="dob"
                                             label="DOB"
@@ -225,7 +219,6 @@ export const Register = () => {
                                     </div>
                                     <div className="mb-4">
                                         <FormInput
-                                            className="form-control"
                                             type="password"
                                             name="password"
                                             label="Password"
@@ -234,7 +227,6 @@ export const Register = () => {
                                     </div>
                                     <div className="mb-4">
                                         <FormInput
-                                            className="form-control"
                                             type="password"
                                             name="password_confirmation"
                                             label="Conform Password"
@@ -247,7 +239,7 @@ export const Register = () => {
                                         <span>Don't have an account?</span>
                                         <Link to={routes.signIn} className="link-primary text-decoration-none fw-bold btn border-0 p-0">Login instead!</Link>
                                     </span>
-                                    <FormSubmit className="btn btn-sm btn-primary px-4">Save</FormSubmit>
+                                    <FormSubmit className="btn-sm btn-primary px-4">Save</FormSubmit>
                                 </div>
                             </div>
                         </div>

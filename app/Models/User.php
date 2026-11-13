@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Models\EmergencyContact;
+use App\Models\Contact;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -23,7 +23,7 @@ class User extends Authenticatable
     protected $guard_name = 'sanctum';
 
     // ✅ AUTO LOAD
-    protected $with = ['addresses', 'roles', 'emergencyContacts', 'subjects', 'classes'];
+    protected $with = ['addresses', 'roles', 'contacts', 'subjects', 'classes'];
 
     protected $fillable = [
         'userId',
@@ -59,8 +59,8 @@ class User extends Authenticatable
         return $this->hasMany(Address::class, 'userId', 'userId');
     }
 
-    public function emergencyContacts(){
-        return $this->hasMany(EmergencyContact::class, 'userId', 'userId');
+    public function contacts(){
+        return $this->hasMany(Contact::class, 'userId', 'userId');
     }
 
     public function subjects(){

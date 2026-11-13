@@ -19,7 +19,6 @@ class ClassFormController extends Controller implements IController
             updateRule: $rule->updateRules(),
             findRule: [
                 'classId' => [],
-                'formTeacherId' => [],
             ],
             listRule: self::SAME_AS_FIND_RULE,
             searchRule: self::SAME_AS_FIND_RULE

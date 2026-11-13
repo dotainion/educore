@@ -3,9 +3,13 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class ClassForm extends Model
 {
+    use HasUuids, SoftDeletes;
+
     protected $primaryKey = 'classId';
     protected $table = 'class_forms';
     protected $guarded = [];
@@ -17,7 +21,6 @@ class ClassForm extends Model
         'classId',
         'name',
         'level',
-        'userId',
         'room',
         'capacity',
         'status',
@@ -32,7 +35,6 @@ class ClassForm extends Model
     public function uniqueIds(){
         return [
             'classId',
-            'userId'
         ];
     }
 }

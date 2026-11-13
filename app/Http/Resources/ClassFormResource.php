@@ -17,11 +17,13 @@ class ClassFormResource extends JsonResource
             'attributes' => [
                 'name' => $this->name,
                 'level' => $this->level,
-                'formTeacherId' => $this->formTeacherId,
                 'room' => $this->room,
                 'capacity' => $this->capacity,
                 'status' => $this->status,
                 'description' => $this->description,
+                'teachers' => [],
+                'createdAt' => $this->created_at,
+                'updatedAt' => $this->updated_at,
             ]
         ];
     }

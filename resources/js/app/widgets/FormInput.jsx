@@ -1,17 +1,19 @@
 import { InputWrapper } from "./InputWrapper"
 
-export const FormInput = ({ label, type, name, value, className, onChange }) => {
+export const FormInput = ({ label, type, name, value, required, className, parentClassName, placeholder, onChange }) => {
     return(
         <InputWrapper
             label={label}
             type={type}
             name={name}
             value={value}
-            className={className}
+            required={required}
+            className={`form-control ${className}`}
+            parentClassName={parentClassName}
             onChange={onChange}
         >
             {(props) => (
-                <input {...props} />
+                <input {...{...props, placeholder} } />
             )}
         </InputWrapper>
     )

@@ -13,14 +13,26 @@ return new class extends Migration
     {
         Schema::create('contacts', function (Blueprint $table) {
             $table->uuid('contactId')->primary();
+
+            $table->boolean('primary')->default(false);
             $table->string('name');
-            $table->string('title');
+            $table->string('title');//Mr, Mrs
             $table->string('email')->unique();
             $table->string('phone');
-            $table->string('company');
+            $table->string('company');//name of company eg: work, hospital
+            $table->string('type');
+            $table->longText('note')->nullable();
             $table->boolean('vip')->default(false);
-            $table->boolean('hide')->default(false);
+            $table->string('relationship')->nullable();//the relation between the employee and the emergency contact
+            
+            $table->uuid('userId');//this can be userId, studentId etc
+            $table->foreign('userId')
+                ->references('userId')
+                ->on('users')
+                ->cascadeOnDelete();
+
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

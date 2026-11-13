@@ -37,3 +37,8 @@
 .nav-scroll:hover::-webkit-scrollbar-thumb:hover {
     background-color: #6c757d;
 }
+
+.wizard-topbar-hover:hover {
+    border: 1px solid var(--bs-primary) !important;
+    opacity: 1 !important;
+}

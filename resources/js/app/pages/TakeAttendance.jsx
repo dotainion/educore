@@ -452,7 +452,7 @@ export const TakeAttendance = () => {
                                                         className="rounded-circle bg-primary bg-opacity-10 text-primary d-flex align-items-center justify-content-center fw-bold flex-shrink-0"
                                                         style={{ width: '46px', height: '46px' }}
                                                     >
-                                                        {student.attributs.fullName
+                                                        {student.attributes.fullName
                                                             .split(' ')
                                                             .map((part) => part[0])
                                                             .slice(0, 2)
@@ -461,7 +461,7 @@ export const TakeAttendance = () => {
 
                                                     <div>
                                                         <div className="fw-semibold">
-                                                            {student.attributs.fullName}
+                                                            {student.attributesmmmm                                                                                                                                                                                                                             .fullName}
                                                         </div>
                                                         <div className="text-secondary small">
                                                             {student.id}

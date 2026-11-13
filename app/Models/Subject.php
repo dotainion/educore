@@ -3,9 +3,13 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Subject extends Model
 {
+    use HasUuids, SoftDeletes;
+
     protected $primaryKey = 'subjectId';
     protected $guarded = [];
     protected $guard_name = 'sanctum';
@@ -17,6 +21,7 @@ class Subject extends Model
         'code',
         'name',
         'category',
+        'description',
         'status',
     ];
 

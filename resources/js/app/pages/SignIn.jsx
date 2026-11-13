@@ -6,9 +6,10 @@ import { Form } from "../widgets/Form";
 import { routes } from "../routes/Routes";
 import { FormError } from "../widgets/FormError";
 import { useAuth } from "../providers/AuthProvider";
+import { ContinueLoginAs } from "../components/ContinueLoginAs";
 
 export const SignIn = () => {
-    const { requireSignIn } = useAuth();
+    const { requireSignIn, user } = useAuth();
 
     const navigate = useNavigate();
 
@@ -18,6 +19,8 @@ export const SignIn = () => {
             navigate(routes.dashboard);
         }, 0);
     }
+
+    if(user) return <ContinueLoginAs />;
 
     return (
         <div className="row justify-content-center m-0 pt-3">
@@ -31,7 +34,6 @@ export const SignIn = () => {
                         <FormError />
                         <div className="mb-3">
                             <FormInput
-                                className="form-control"
                                 type="email"
                                 name="email"
                                 label="Email"
@@ -40,7 +42,6 @@ export const SignIn = () => {
                         </div>
                         <div className="mb-3">
                             <FormInput
-                                className="form-control"
                                 type="password"
                                 name="password"
                                 label="Password"
@@ -53,7 +54,7 @@ export const SignIn = () => {
                                 className="link-danger text-decoration-none btn border-0 p-0"
                             >Forgot Password?</Link>
                         </div>
-                        <FormSubmit className="btn btn-primary w-100 mb-4">Log in</FormSubmit>
+                        <FormSubmit className="btn-primary w-100 mb-4">Log in</FormSubmit>
                         <div className="d-flex align-items-center flex-wrap gap-2 mb-4">
                             <span>Don't have an account?</span>
                             <Link

@@ -9,7 +9,7 @@ export const AcademicReports = () => {
             title: "Create Progress Report",
             description: "Create and prepare academic progress reports to track student performance throughout the term.",
             icon: "bi-file-earmark-plus",
-            route: routes.progressReport,
+            route: routes.progressReport.base,
             label: "Create report",
             color: "primary",
         },{

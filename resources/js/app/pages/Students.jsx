@@ -1,59 +1,14 @@
 
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { api } from '../service/Api';
 import { routes } from '../routes/Routes';
+import { StudentsFilter } from '../components/StudentsFilter';
 
 export const Students = () => {
-    const [search, setSearch] = useState('');
-    const [classFilter, setClassFilter] = useState('All');
-    const [statusFilter, setStatusFilter] = useState('All');
     const [students, setStudents] = useState([]);
 
-    const normalizedStudents = students.map((student) => {
-        const attributes = student.attributes || {};
-
-        return {
-            ...attributes,
-            id: student.id,
-            firstName: attributes.firstName ?? student.firstName ?? '',
-            middleName: attributes.middleName ?? student.middleName ?? '',
-            lastName: attributes.lastName ?? student.lastName ?? '',
-            email: attributes.email ?? student.email ?? '',
-            phone: attributes.phone ?? attributes.contact ?? student.phone ?? '',
-            gender: attributes.gender ?? student.gender ?? '',
-            className: attributes.className ?? student.className ?? '',
-            status: attributes.status ?? student.status ?? 'active',
-        };
-    });
-
-    const availableClasses = [
-        ...new Set(normalizedStudents.map((student) => student.className).filter(Boolean)),
-    ];
-
-    const filteredStudents = normalizedStudents.filter((student) => {
-        const fullName = `${student.firstName} ${student.middleName} ${student.lastName}`;
-
-        const matchesSearch = [
-            fullName,
-            student.email,
-            student.phone,
-            student.nationality,
-            student.previousSchool,
-        ]
-            .join(' ')
-            .toLowerCase()
-            .includes(search.toLowerCase());
-
-        const matchesClass =
-            classFilter === 'All' || student.className === classFilter;
-
-        const matchesStatus =
-            statusFilter === 'All' ||
-            student.status.toLowerCase() === statusFilter.toLowerCase();
-
-        return matchesSearch && matchesClass && matchesStatus;
-    });
+    const navigate = useNavigate();
 
     const getStatusClass = (status) => {
         switch (status?.toLowerCase()) {
@@ -73,49 +28,30 @@ export const Students = () => {
     const handleDelete = (event, student) => {
         event.stopPropagation();
 
-        if (!window.confirm(
-            `Are you sure you want to delete ${student.firstName} ${student.lastName}?`
-        )) {
-            return;
-        }
-
         api.get('/students/delete', {
             params: { studentId: student.studentId },
-        })
-            .then(() => {
-                setStudents((current) =>
-                    current.filter((item) => item.id !== student.id)
-                );
-            })
-            .catch((error) => {
-                console.error('Failed to delete student:', error);
-                window.alert('Unable to delete student. Please try again.');
-            });
+        }).then(() => {
+            setStudents((current) => current.filter((item) => item.id !== student.id));
+        }).catch((error) => {
+            console.error('Failed to delete student:', error);
+        });
     };
 
-    const resetFilters = () => {
-        setSearch('');
-        setClassFilter('All');
-        setStatusFilter('All');
-    };
+    const activeCount = students.filter(
+        (student) => student.attributes.status.toLowerCase() === 'active'
+    ).length;
+
+    const transferredCount = students.filter(
+        (student) => student.attributes.status.toLowerCase() === 'transferred'
+    ).length;
 
     useEffect(() => {
-        api.get('/student/list')
-            .then((response) => {
-                setStudents(response.data.students || []);
-            })
-            .catch((error) => {
-                console.error('Failed to load students:', error);
-            });
+        api.get('/student/list').then((response) => {
+            setStudents(response.data.students);
+        }).catch((error) => {
+            console.error('Failed to load students:', error);
+        });
     }, []);
-
-    const activeCount = normalizedStudents.filter(
-        (student) => student.status.toLowerCase() === 'active'
-    ).length;
-
-    const transferredCount = normalizedStudents.filter(
-        (student) => student.status.toLowerCase() === 'transferred'
-    ).length;
 
     return (
         <div className="container-fluid py-4 px-3 px-lg-4">
@@ -129,7 +65,7 @@ export const Students = () => {
                 </div>
 
                 <Link
-                    to={routes.addStudent}
+                    to={routes.studentCrud.absolute(routes.studentCrud.information('new'))}
                     className="btn btn-primary d-inline-flex align-items-center gap-2 px-3"
                 >
                     <i className="bi bi-plus-lg" />
@@ -197,201 +133,121 @@ export const Students = () => {
             {/* Student Directory */}
             <div className="card border-0 shadow-sm">
                 <div className="card-header bg-body border-0 p-3 p-lg-4">
-                    <div className="d-flex flex-column flex-lg-row justify-content-between align-items-lg-center gap-2 mb-3">
-                        <div>
-                            <h5 className="fw-bold mb-1">Student directory</h5>
-                            <p className="small text-body-secondary mb-0">
-                                Showing {filteredStudents.length} of {students.length} students
-                            </p>
-                        </div>
-
-                        {(search || classFilter !== 'All' || statusFilter !== 'All') && (
-                            <button
-                                type="button"
-                                className="btn btn-sm btn-outline-secondary align-self-start"
-                                onClick={resetFilters}
-                            >
-                                <i className="bi bi-arrow-counterclockwise me-2" />
-                                Clear filters
-                            </button>
-                        )}
-                    </div>
-
-                    <div className="row g-2">
-                        <div className="col-12 col-lg-6">
-                            <div className="input-group">
-                                <span className="input-group-text bg-body-tertiary border-end-0">
-                                    <i className="bi bi-search text-body-secondary" />
-                                </span>
-                                <input
-                                    type="search"
-                                    className="form-control bg-body-tertiary border-start-0"
-                                    placeholder="Search by name, email or phone"
-                                    value={search}
-                                    onChange={(event) => setSearch(event.target.value)}
-                                    aria-label="Search students"
-                                />
-                            </div>
-                        </div>
-
-                        <div className="col-6 col-lg-3">
-                            <select
-                                className="form-select"
-                                value={classFilter}
-                                onChange={(event) => setClassFilter(event.target.value)}
-                                aria-label="Filter by class"
-                            >
-                                <option value="All">All classes</option>
-                                {availableClasses.map((schoolClass) => (
-                                    <option key={schoolClass} value={schoolClass}>
-                                        {schoolClass}
-                                    </option>
-                                ))}
-                            </select>
-                        </div>
-
-                        <div className="col-6 col-lg-3">
-                            <select
-                                className="form-select"
-                                value={statusFilter}
-                                onChange={(event) => setStatusFilter(event.target.value)}
-                                aria-label="Filter by status"
-                            >
-                                <option value="All">All statuses</option>
-                                <option value="active">Active</option>
-                                <option value="inactive">Inactive</option>
-                                <option value="transferred">Transferred</option>
-                                <option value="graduated">Graduated</option>
-                            </select>
-                        </div>
-                    </div>
+                    <StudentsFilter />
                 </div>
 
                 {/* Responsive Student Cards */}
                 <div className="card-body bg-body-tertiary p-3 p-lg-4">
-                    {filteredStudents.length > 0 ? (
+                    {students.length > 0 ? (
                         <div className="row g-3">
-                            {filteredStudents.map((student) => {
-                                const fullName = [
-                                    student.firstName,
-                                    student.middleName,
-                                    student.lastName,
-                                ].filter(Boolean).join(' ');
-
-                                return (
+                            {students.map((student) => (
+                                <div
+                                    className="col-12 col-sm-6 col-lg-4 col-xxl-3"
+                                    key={student.id}
+                                >
                                     <div
-                                        key={student.id}
-                                        className="col-12 col-sm-6 col-lg-4 col-xxl-3"
+                                        className="card border-0 shadow-sm h-100"
+                                        role="button"
+                                        tabIndex={0}
+                                        onClick={() => navigate(routes.viewStudent(student.id))}
                                     >
-                                        <div
-                                            className="card border-0 shadow-sm h-100"
-                                            role="button"
-                                            tabIndex={0}
-                                            onClick={() => navigate('/student/create')}
-                                            onKeyDown={(event) => {
-                                                if (event.key === 'Enter') {
-                                                    navigate('/student/create');
-                                                }
-                                            }}
-                                        >
-                                            <div className="card-body p-3">
-                                                {/* Student Identity */}
-                                                <div className="d-flex align-items-start gap-2 mb-3">
-                                                    <div
-                                                        className="rounded-circle bg-primary-subtle text-primary fw-semibold d-flex align-items-center justify-content-center flex-shrink-0"
-                                                        style={{ width: '44px', height: '44px' }}
-                                                    >
-                                                        {`${student.firstName.charAt(0)}${student.lastName.charAt(0)}`.toUpperCase() || (
-                                                            <i className="bi bi-person" />
-                                                        )}
-                                                    </div>
-
-                                                    <div className="flex-grow-1 min-w-0">
-                                                        <h6 className="fw-bold mb-1 text-break">
-                                                            {fullName || 'Unnamed student'}
-                                                        </h6>
-                                                        <span className={`badge rounded-pill ${getStatusClass(student.status)}`}>
-                                                            {student.status}
-                                                        </span>
-                                                    </div>
-
-                                                    <button
-                                                        type="button"
-                                                        className="btn btn-sm btn-light text-danger flex-shrink-0"
-                                                        title="Delete student"
-                                                        aria-label={`Delete ${fullName}`}
-                                                        onClick={(event) => handleDelete(event, student)}
-                                                    >
-                                                        <i className="bi bi-trash3" />
-                                                    </button>
+                                        <div className="card-body p-3">
+                                            {/* Student Identity */}
+                                            <div className="d-flex align-items-start gap-2 mb-3">
+                                                <div
+                                                    className="rounded-circle bg-primary-subtle text-primary fw-semibold d-flex align-items-center justify-content-center flex-shrink-0"
+                                                    style={{ width: '44px', height: '44px' }}
+                                                >
+                                                    {`${student.attributes.firstName.charAt(0)}${student.attributes.lastName.charAt(0)}`.toUpperCase() || (
+                                                        <i className="bi bi-person" />
+                                                    )}
                                                 </div>
 
-                                                {/* Contact Details */}
-                                                <div className="d-flex flex-column gap-2">
-                                                    <div className="d-flex align-items-start gap-2">
-                                                        <i className="bi bi-envelope text-body-secondary mt-1" />
-                                                        <span className="small text-break">
-                                                            {student.email || 'No email provided'}
-                                                        </span>
-                                                    </div>
+                                                <div className="flex-grow-1 min-w-0">
+                                                    <h6 className="fw-bold mb-1 text-break">
+                                                        {student.attributes.fullName}
+                                                    </h6>
+                                                    <span className={`badge rounded-pill ${getStatusClass(student.attributes.status)}`}>
+                                                        {student.attributes.status}
+                                                    </span>
+                                                </div>
 
-                                                    <div className="d-flex align-items-start gap-2">
-                                                        <i className="bi bi-telephone text-body-secondary mt-1" />
-                                                        <span className="small text-break">
-                                                            {student.phone || 'No phone provided'}
-                                                        </span>
+                                                <button
+                                                    type="button"
+                                                    className="btn btn-sm btn-light text-danger flex-shrink-0"
+                                                    title="Delete student"
+                                                    aria-label={`Delete ${student.attributes.fullName}`}
+                                                    onClick={(event) => handleDelete(event, student)}
+                                                >
+                                                    <i className="bi bi-trash3" />
+                                                </button>
+                                            </div>
+
+                                            {/* Contact Details */}
+                                            <div className="d-flex flex-column gap-2">
+                                                <div className="d-flex align-items-start gap-2">
+                                                    <i className="bi bi-envelope text-body-secondary mt-1" />
+                                                    <span className="small text-break">
+                                                        {student.attributes.email || 'No email provided'}
+                                                    </span>
+                                                </div>
+
+                                                <div className="d-flex align-items-start gap-2">
+                                                    <i className="bi bi-telephone text-body-secondary mt-1" />
+                                                    <span className="small text-break">
+                                                        {student.attributes.phone || 'No phone provided'}
+                                                    </span>
+                                                </div>
+                                            </div>
+
+                                            <hr className="my-3" />
+
+                                            {/* Class and Student Details */}
+                                            <div className="d-flex flex-column gap-2">
+                                                <div className="d-flex align-items-start gap-2">
+                                                    <i className="bi bi-people text-body-secondary mt-1" />
+                                                    <div className="min-w-0">
+                                                        <div className="small text-body-secondary">
+                                                            Class
+                                                        </div>
+                                                        <div className="small fw-semibold text-break">
+                                                            {student.attributes.className || 'Not assigned'}
+                                                        </div>
                                                     </div>
                                                 </div>
 
-                                                <hr className="my-3" />
-
-                                                {/* Class and Student Details */}
-                                                <div className="d-flex flex-column gap-2">
+                                                {student.attributes.gender && (
                                                     <div className="d-flex align-items-start gap-2">
-                                                        <i className="bi bi-people text-body-secondary mt-1" />
+                                                        <i className="bi bi-person text-body-secondary mt-1" />
+                                                        <div>
+                                                            <div className="small text-body-secondary">
+                                                                Gender
+                                                            </div>
+                                                            <div className="small fw-semibold">
+                                                                {student.attributes.gender}
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                )}
+
+                                                {student.attributes.nationality && (
+                                                    <div className="d-flex align-items-start gap-2">
+                                                        <i className="bi bi-globe text-body-secondary mt-1" />
                                                         <div className="min-w-0">
                                                             <div className="small text-body-secondary">
-                                                                Class
+                                                                Nationality
                                                             </div>
                                                             <div className="small fw-semibold text-break">
-                                                                {student.className || 'Not assigned'}
+                                                                {student.nationality}
                                                             </div>
                                                         </div>
                                                     </div>
-
-                                                    {student.gender && (
-                                                        <div className="d-flex align-items-start gap-2">
-                                                            <i className="bi bi-person text-body-secondary mt-1" />
-                                                            <div>
-                                                                <div className="small text-body-secondary">
-                                                                    Gender
-                                                                </div>
-                                                                <div className="small fw-semibold">
-                                                                    {student.gender}
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    )}
-
-                                                    {student.nationality && (
-                                                        <div className="d-flex align-items-start gap-2">
-                                                            <i className="bi bi-globe text-body-secondary mt-1" />
-                                                            <div className="min-w-0">
-                                                                <div className="small text-body-secondary">
-                                                                    Nationality
-                                                                </div>
-                                                                <div className="small fw-semibold text-break">
-                                                                    {student.nationality}
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    )}
-                                                </div>
+                                                )}
                                             </div>
                                         </div>
                                     </div>
-                                );
-                            })}
+                                </div>
+                            ))}
                         </div>
                     ) : (
                         <div className="text-center py-5 px-3">
@@ -404,23 +260,13 @@ export const Students = () => {
                                     ? 'Try changing your search or filters.'
                                     : 'Students will appear here when available.'}
                             </p>
-
-                            {(search || classFilter !== 'All' || statusFilter !== 'All') && (
-                                <button
-                                    type="button"
-                                    className="btn btn-outline-primary btn-sm"
-                                    onClick={resetFilters}
-                                >
-                                    Clear filters
-                                </button>
-                            )}
                         </div>
                     )}
                 </div>
 
                 <div className="card-footer bg-body border-0 px-3 px-lg-4 py-3">
                     <small className="text-body-secondary">
-                        Showing {filteredStudents.length} of {students.length} students
+                        Showing {students.length} students
                     </small>
                 </div>
             </div>

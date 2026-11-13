@@ -1,4 +1,4 @@
-export class Api{
+export class Account{
     constructor(API){
         this.api = API;
     }

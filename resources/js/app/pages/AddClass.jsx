@@ -1,27 +1,20 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { api } from '../service/Api';
 
 const initialForm = {
     name: '',
     level: '',
-    teacher: '',
     room: '',
     capacity: 30,
     status: 'Active',
     description: '',
 };
 
-const mockTeachers = [
-    { id: 1, name: 'Sarah James' },
-    { id: 2, name: 'Michael Thomas' },
-    { id: 3, name: 'Jennifer Williams' },
-    { id: 4, name: 'David Charles' },
-    { id: 5, name: 'Angela Roberts' },
-];
-
 export const AddClass = () => {
     const [form, setForm] = useState(initialForm);
     const [errors, setErrors] = useState({});
     const [successMessage, setSuccessMessage] = useState('');
+    const [teachers, setTeachers] = useState([]);
 
     const updateField = (event) => {
         const { name, value } = event.target;
@@ -92,6 +85,14 @@ export const AddClass = () => {
         setErrors({});
         setSuccessMessage('');
     };
+
+    useEffect(()=>{
+        api.get('/users/list').then((response)=>{
+            setTeachers(response.data.users);
+        }).catch((error)=>{
+
+        });
+    }, []);
 
     return (
         <div className="container-fluid py-4">
@@ -277,16 +278,12 @@ export const AddClass = () => {
                                             value={form.teacher}
                                             onChange={updateField}
                                         >
-                                            <option value="">
+                                            <option value="" hidden>
                                                 Select a teacher
                                             </option>
-
-                                            {mockTeachers.map((teacher) => (
-                                                <option
-                                                    key={teacher.id}
-                                                    value={teacher.name}
-                                                >
-                                                    {teacher.name}
+                                            {teachers.map((teacher) => (
+                                                <option value={teacher.id} key={teacher.id}>
+                                                    {teacher.attributes.fullName}
                                                 </option>
                                             ))}
                                         </select>

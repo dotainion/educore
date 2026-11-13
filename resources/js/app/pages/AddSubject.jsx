@@ -1,4 +1,7 @@
 import React, { useState } from 'react';
+import { Switch } from '../widgets/Switch';
+import { Link } from 'react-router-dom';
+import { routes } from '../routes/Routes';
 
 export const AddSubject = () => {
     const [formData, setFormData] = useState({
@@ -14,18 +17,6 @@ export const AddSubject = () => {
 
     const [errors, setErrors] = useState({});
     const [saved, setSaved] = useState(false);
-
-    // Mock data — replace with API data later.
-    const departments = [
-        'Mathematics',
-        'Languages',
-        'Science',
-        'Humanities',
-        'Business',
-        'Technical & Vocational',
-        'Physical Education',
-        'Arts',
-    ];
 
     const teachers = [
         { id: 1, name: 'Mr. James Williams' },
@@ -86,10 +77,6 @@ export const AddSubject = () => {
             newErrors.category = 'Please select a category.';
         }
 
-        if (!formData.department) {
-            newErrors.department = 'Please select a department.';
-        }
-
         setErrors(newErrors);
 
         return Object.keys(newErrors).length === 0;
@@ -129,12 +116,12 @@ export const AddSubject = () => {
             <div className="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
                 <div>
                     <div className="d-flex align-items-center gap-2 mb-2">
-                        <a
-                            href="/subjects"
+                        <Link
+                            to={routes.subjects}
                             className="text-decoration-none text-secondary"
                         >
                             Subjects
-                        </a>
+                        </Link>
                         <i className="bi bi-chevron-right small text-secondary"></i>
                         <span className="text-secondary small">Add Subject</span>
                     </div>
@@ -145,13 +132,13 @@ export const AddSubject = () => {
                     </p>
                 </div>
 
-                <a
-                    href="/subjects"
+                <Link
+                    to={routes.subjects}
                     className="btn btn-outline-secondary"
                 >
                     <i className="bi bi-arrow-left me-2"></i>
                     Back to Subjects
-                </a>
+                </Link>
             </div>
 
             {saved && (
@@ -273,40 +260,6 @@ export const AddSubject = () => {
                                         {errors.category && (
                                             <div className="invalid-feedback">
                                                 {errors.category}
-                                            </div>
-                                        )}
-                                    </div>
-
-                                    <div className="col-12 col-md-6">
-                                        <label
-                                            htmlFor="department"
-                                            className="form-label fw-semibold"
-                                        >
-                                            Department <span className="text-danger">*</span>
-                                        </label>
-
-                                        <select
-                                            id="department"
-                                            name="department"
-                                            className={`form-select ${errors.department ? 'is-invalid' : ''}`}
-                                            value={formData.department}
-                                            onChange={handleChange}
-                                        >
-                                            <option value="">Select department</option>
-
-                                            {departments.map((department) => (
-                                                <option
-                                                    key={department}
-                                                    value={department}
-                                                >
-                                                    {department}
-                                                </option>
-                                            ))}
-                                        </select>
-
-                                        {errors.department && (
-                                            <div className="invalid-feedback">
-                                                {errors.department}
                                             </div>
                                         )}
                                     </div>
@@ -470,17 +423,11 @@ export const AddSubject = () => {
                                 >
                                     Subject Status
                                 </label>
-
-                                <select
-                                    id="status"
-                                    name="status"
-                                    className="form-select mb-3"
-                                    value={formData.status}
+                                <Switch
+                                    className="mb-3"
+                                    value={formData.status === 'active'}
                                     onChange={handleChange}
-                                >
-                                    <option value="Active">Active</option>
-                                    <option value="Inactive">Inactive</option>
-                                </select>
+                                />
 
                                 <div className="alert alert-light border mb-0">
                                     <div className="d-flex gap-2">
@@ -495,54 +442,6 @@ export const AddSubject = () => {
                                             </small>
                                         </div>
                                     </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        {/* Summary */}
-                        <div className="card border-0 shadow-sm mb-4">
-                            <div className="card-header bg-white py-3">
-                                <h5 className="fw-bold mb-0">
-                                    <i className="bi bi-card-checklist me-2 text-primary"></i>
-                                    Subject Summary
-                                </h5>
-                            </div>
-
-                            <div className="card-body p-4">
-                                <div className="d-flex justify-content-between gap-3 mb-3">
-                                    <span className="text-secondary">Subject Code</span>
-                                    <span className="fw-semibold text-break">
-                                        {formData.code || 'Not set'}
-                                    </span>
-                                </div>
-
-                                <hr />
-
-                                <div className="d-flex justify-content-between gap-3 mb-3">
-                                    <span className="text-secondary">Category</span>
-                                    <span className="badge text-bg-primary">
-                                        {formData.category}
-                                    </span>
-                                </div>
-
-                                <hr />
-
-                                <div className="d-flex justify-content-between gap-3 mb-3">
-                                    <span className="text-secondary">Classes</span>
-                                    <span className="fw-semibold">
-                                        {formData.classes.length}
-                                    </span>
-                                </div>
-
-                                <hr />
-
-                                <div className="d-flex justify-content-between gap-3">
-                                    <span className="text-secondary">Status</span>
-                                    <span
-                                        className={`badge ${formData.status === 'Active' ? 'text-bg-success' : 'text-bg-secondary'}`}
-                                    >
-                                        {formData.status}
-                                    </span>
                                 </div>
                             </div>
                         </div>

@@ -18,7 +18,10 @@ class SubjectResource extends JsonResource
                 'code' => $this->code,
                 'name' => $this->name,
                 'category' => $this->category,
+                'description' => $this->description,
                 'status' => $this->status,
+                'createdAt' => $this->created_at,
+                'updatedAt' => $this->updated_at,
             ]
         ];
     }

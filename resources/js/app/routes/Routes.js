@@ -1,19 +1,69 @@
+const nestedRoutes = (key) => ({
+    absolute: (path) => routes[key].base.replace('*', path)
+});
+
 export const routes = {
     default: '/',
     signIn: '/login',
     signOut: '/logout',
     recovery: '/recovery',
     signUp: '/register',
-    progressReport: '/progress/report/*',
+    progressReport: {
+        base: '/progress/report/*',
+        studentDetails: 'student/details',
+        attendanceBehaviour: 'attendance/behaviour',
+        academicResults: 'academic/results',
+        performanceComments: 'performance/comments',
+        approvalReview: 'approval/review',
+        finalReview: 'final/review',
+        ...nestedRoutes('progressReport')
+    },
     viewProgressReport: '/view/progress/report',
     reportCard: '/report/card',
     reportCardList: '/report/card/list',
     progressReportList: '/progress/report/list',
     academicReports: '/academic/reports',
     teachers: '/teachers',
-    addTeacher: '/teacher/create',
+    viewTeacher: (teacherId=':teacherId') => `/teacher/view/${teacherId}`,
+    editTeacher: {
+        information: (teacherId=':teacherId') => `/edit/teacher/information/${teacherId}`,
+        assignClasses: (teacherId=':teacherId') => `/edit/teacher/ssign/classes/${teacherId}`,
+        assignSubjects: (teacherId=':teacherId') => `/edit/teacher/assign/subjects/${teacherId}`,
+        employment: (teacherId=':teacherId') => `/edit/teacher/employment/${teacherId}`,
+        documents: (teacherId=':teacherId') => `/edit/teacher/documents/${teacherId}`,
+        additionalInformation: (teacherId=':teacherId') => `/edit/teacher/additional/information/${teacherId}`,
+    },
+    teacherCrud: {
+        base: '/teacher/*',
+        information: (teacherId=':teacherId') => `information/${teacherId}`,
+        assignClasses: (teacherId=':teacherId') => `ssign/classes/${teacherId}`,
+        assignSubjects: (teacherId=':teacherId') => `assign/subjects/${teacherId}`,
+        employment: (teacherId=':teacherId') => `employment/${teacherId}`,
+        documents: (teacherId=':teacherId') => `documents/${teacherId}`,
+        additionalInformation: (teacherId=':teacherId') => `additional/information/${teacherId}`,
+        ...nestedRoutes('teacherCrud')
+    },
     students: '/students',
-    addStudent: '/student/create',
+    viewStudent: (studentId=':studentId') => `/student/view/${studentId}`,
+    editStudent: {
+        information: (studentId=':studentId') => `/edit/student/information/${studentId}`,
+        address: (studentId=':studentId') => `/edit/student/address/${studentId}`,
+        guardian: (studentId=':studentId') => `/edit/student/parent/guardian/${studentId}`,
+        contacts: (studentId=':studentId') => `/edit/student/emergency/contacts/${studentId}`,
+        medical: (studentId=':studentId') => `/edit/student/medical/information/${studentId}`,
+        documents: (studentId=':studentId') => `/edit/student/documents/${studentId}`,
+    },
+    studentCrud: {
+        base: '/student/*',
+        information: (studentId=':studentId') => `information/${studentId}`,
+        address: (studentId=':studentId') => `address/${studentId}`,
+        guardian: (studentId=':studentId') => `parent/guardian/${studentId}`,
+        contacts: (studentId=':studentId') => `emergency/contacts/${studentId}`,
+        medical: (studentId=':studentId') => `medical/information/${studentId}`,
+        documents: (studentId=':studentId') => `documents/${studentId}`,
+        review: (studentId=':studentId') => `documents/&/review/${studentId}`,
+        ...nestedRoutes('studentCrud')
+    },
     classes: '/classes',
     addClass: '/class/create',
     timetable: '/timetable',
@@ -25,5 +75,5 @@ export const routes = {
     reportsAnalytics: '/reports/&/analytics',
     dashboard: '/dashboard',
     notifications: '/notifications',
-    settings: '/settings'
+    settings: '/settings',
 }

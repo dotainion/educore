@@ -19,7 +19,6 @@ class UserController extends Controller implements IController
             updateRule: $rule->updateRules(),
             findRule: [
                 'userId' => [],
-                'applicantId' => [],
             ],
             listRule: self::SAME_AS_FIND_RULE,
             searchRule: self::SAME_AS_FIND_RULE

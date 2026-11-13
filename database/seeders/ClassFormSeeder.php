@@ -16,32 +16,28 @@ class ClassFormSeeder extends Seeder
             'capacity' => 30,
             'status' => 'active',
             'description' => 'First form',
-        ],
-        [
+        ],[
             'name' => 'Form 2',
             'level' => 2,
             'room' => null,
             'capacity' => 30,
             'status' => 'active',
             'description' => 'Second form',
-        ],
-        [
+        ],[
             'name' => 'Form 3',
             'level' => 3,
             'room' => null,
             'capacity' => 30,
             'status' => 'active',
             'description' => 'Third form',
-        ],
-        [
+        ],[
             'name' => 'Form 4',
             'level' => 4,
             'room' => null,
             'capacity' => 30,
             'status' => 'active',
             'description' => 'Fourth form',
-        ],
-        [
+        ],[
             'name' => 'Form 5',
             'level' => 5,
             'room' => null,
@@ -59,7 +55,6 @@ class ClassFormSeeder extends Seeder
                 [
                     'classId' => (string) Str::uuid(),
                     'level' => $class['level'],
-                    'formTeacherId' => null,
                     'room' => $class['room'],
                     'capacity' => $class['capacity'],
                     'status' => $class['status'],

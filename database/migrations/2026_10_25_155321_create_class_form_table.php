@@ -16,7 +16,6 @@ return new class extends Migration
 
             $table->string('name');
             $table->string('level');
-            $table->string('formTeacherId')->nullable();
             $table->string('room')->nullable();
             $table->string('capacity');
             $table->string('status');

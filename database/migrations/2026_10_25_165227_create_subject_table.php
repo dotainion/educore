@@ -17,7 +17,8 @@ return new class extends Migration
             $table->string('code');
             $table->string('name');
             $table->string('category');
-            $table->string('status');
+            $table->longText('description')->nullable();
+            $table->string('status')->default('active');
 
             $table->timestamps();
             $table->softDeletes();

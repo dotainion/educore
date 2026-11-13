@@ -1,7 +1,9 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { api } from "../../service/Api";
+import { StudentsFilter } from "../../components/StudentsFilter";
 
 export const StudentDetails = () => {
-    const [student, setStudent] = useState({});
+    const [student, setStudent] = useState(null);
     const [students, setStudents] = useState([]);
 
     const updateStudent = (field, value) => {
@@ -14,6 +16,15 @@ export const StudentDetails = () => {
     const onStudentSelect = (studentId) => {
         
     };
+
+    useEffect(() => {
+        api.get('/students').then((response) => {
+            console.log(response.data.students);
+            setStudents(response.data.students);
+        }).catch((error) => {
+            console.error('Error fetching students:', error);
+        })
+    }, [])
 
     return (
         <div>
@@ -34,67 +45,18 @@ export const StudentDetails = () => {
             </div>
 
             <div className="row g-3">
-                <div className="col-12">
-                    <div>
-                        <label className="form-label fw-semibold">Select Student</label>
-                        <select
-                            className="form-select"
-                            value={student.id}
-                            onChange={event => onStudentSelect(event.target.value)}
-                        >
-                            <option value="">Choose a student...</option>
-                            {students.map(item => (
-                                <option key={item.id} value={item.id}>
-                                    {item.name} — {item.id}
-                                </option>
-                            ))}
-                        </select>
-                    </div>
-                </div>
-
-                <div className="col-lg-6">
-                    <div>
-                        <label className="form-label fw-semibold">Student Full Name</label>
-                        <input
-                            type="text"
-                            className="form-control"
-                            placeholder="Enter student's full name"
-                            value={student.name}
-                            onChange={event => updateStudent("name", event.target.value)}
-                            required
-                        />
-                    </div>
-                </div>
+                <StudentsFilter />
 
                 <div className="col-sm-6 col-lg-3">
                     <div>
                         <label className="form-label fw-semibold">Form / Class</label>
-                        <select
-                            className="form-select"
-                            value={student.form}
-                            onChange={event => updateStudent("form", event.target.value)}
-                            required
-                        >
-                            <option value="">Select class...</option>
-                            {[].map(item => (
-                                <option key={item.id} value={item.id}>
-                                    {item.name}
-                                </option>
-                            ))}
-                        </select>
-                    </div>
-                </div>
-
-                <div className="col-sm-6 col-lg-3">
-                    <div>
-                        <label className="form-label fw-semibold">Number in Form</label>
                         <input
                             type="number"
                             min="1"
                             className="form-control"
-                            placeholder="e.g. 12"
-                            value={student.numberInForm}
-                            onChange={event => updateStudent("numberInForm", event.target.value)}
+                            placeholder="class/form"
+                            //value={student.numberInForm}
+                            onChange={event => updateStudent("form", event.target.value)}
                         />
                     </div>
                 </div>
@@ -104,7 +66,7 @@ export const StudentDetails = () => {
                         <label className="form-label fw-semibold">Academic Year</label>
                         <select
                             className="form-select"
-                            value={student.academicYear}
+                            //value={student.academicYear}
                             onChange={event => updateStudent("academicYear", event.target.value)}
                         >
                             {[].map(year => (
@@ -119,7 +81,7 @@ export const StudentDetails = () => {
                         <label className="form-label fw-semibold">School Term Period</label>
                         <select
                             className="form-select"
-                            value={student.term}
+                            //value={student.term}
                             onChange={event => updateStudent("term", event.target.value)}
                         >
                             {[].map(term => (
@@ -132,14 +94,14 @@ export const StudentDetails = () => {
                 </div>
             </div>
 
-            {null && (
+            {student && (
                 <div className="rounded-3 border bg-light p-3 mt-4">
                     <div className="d-flex align-items-center gap-3">
                         <div className="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center flex-shrink-0" style={{ width: "44px", height: "44px" }}>
                             <i className="bi bi-person fs-5"></i>
                         </div>
                         <div>
-                            <div className="fw-semibold">selectedStudent.name</div>
+                            <div className="fw-semibold">{student.attributes.fullName}</div>
                             <div className="small text-secondary">
                                 Student ID: 
                             </div>
